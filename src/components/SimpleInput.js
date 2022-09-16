@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
 
   const nameInputRef = useRef();
 
@@ -11,6 +12,14 @@ const SimpleInput = (props) => {
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
+
+    if (enteredName.trim() === "") {
+      setEnteredNameIsValid(false);
+      return; //break the current function's execution
+    }
+
+    setEnteredNameIsValid(true); //because we've made past the validity check above
+
     console.log(enteredName);
     const enteredValue = nameInputRef.current.value;
     console.log("Using ref: ", enteredValue);
@@ -28,6 +37,9 @@ const SimpleInput = (props) => {
           onChange={nameInputChangeHandler}
           value={enteredName}
         />
+        {!enteredNameIsValid && (
+          <p className="error-text">Name must not be empty.</p>
+        )}
       </div>
       <div className="form-actions">
         <button>Submit</button>
