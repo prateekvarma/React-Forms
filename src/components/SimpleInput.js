@@ -1,14 +1,17 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); //to check if the name field is yet entered or not.
 
-  const nameInputRef = useRef();
-
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+
+    if (event.target.value.trim() !== "") {
+      //using event.target.value instead of 'enteredName' state because it's coming directly from the user, and doesn't need to be schedules as a state.
+      setEnteredNameIsValid(true);
+    }
   };
 
   const nameInputBlurHandler = (event) => {
@@ -16,13 +19,12 @@ const SimpleInput = (props) => {
 
     if (enteredName.trim() === "") {
       setEnteredNameIsValid(false);
-      return; //break the current function's execution
     }
   };
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    
+
     setEnteredNameTouched(true);
 
     if (enteredName.trim() === "") {
@@ -33,8 +35,7 @@ const SimpleInput = (props) => {
     setEnteredNameIsValid(true); //because we've made past the validity check above
 
     console.log(enteredName);
-    const enteredValue = nameInputRef.current.value;
-    console.log("Using ref: ", enteredValue);
+
     setEnteredName(""); //clear input field
   };
 
@@ -49,7 +50,6 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameInputRef}
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
