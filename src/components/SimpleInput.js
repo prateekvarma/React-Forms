@@ -2,24 +2,17 @@ import { useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); //to check if the name field is yet entered or not.
+
+  const enteredNameIsValid = enteredName.trim() !== ""; //replaced an entire state with a simple boolean expression.
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //if user has initially typed into the form, and the field is valid.
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
-
-    if (event.target.value.trim() !== "") {
-      //using event.target.value instead of 'enteredName' state because it's coming directly from the user, and doesn't need to be schedules as a state.
-      setEnteredNameIsValid(true);
-    }
   };
 
   const nameInputBlurHandler = (event) => {
     setEnteredNameTouched(true);
-
-    if (enteredName.trim() === "") {
-      setEnteredNameIsValid(false);
-    }
   };
 
   const formSubmissionHandler = (event) => {
@@ -27,19 +20,15 @@ const SimpleInput = (props) => {
 
     setEnteredNameTouched(true);
 
-    if (enteredName.trim() === "") {
-      setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return; //break the current function's execution
     }
-
-    setEnteredNameIsValid(true); //because we've made past the validity check above
 
     console.log(enteredName);
 
     setEnteredName(""); //clear input field
+    setEnteredNameTouched(false); //without this, the error message persists after submit
   };
-
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //if user has initially typed into the form, and the field is valid.
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
