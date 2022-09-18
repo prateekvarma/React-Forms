@@ -14,7 +14,7 @@ const SimpleInput = (props) => {
       setFormIsValid(true);
     } else {
       setFormIsValid(false); //if one of the fields are invalid, entire form is invaid
-    }``
+    }
   }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = (event) => {
