@@ -1,21 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); //to check if the name field is yet entered or not.
-  const [formIsValid, setFormIsValid] = useState(false); //for the entire form, not just an element
 
   const enteredNameIsValid = enteredName.trim() !== ""; //replaced an entire state with a simple boolean expression.
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //if user has initially typed into the form, and the field is valid.
 
-  useEffect(() => {
+  let formIsValid = false; // checks validity of the whole form
+
     if (enteredNameIsValid) {
       //if had more fields we could if(enteredNameIsValid && ageIsValid)
-      setFormIsValid(true);
-    } else {
-      setFormIsValid(false); //if one of the fields are invalid, entire form is invaid
+      formIsValid = true;
     }
-  }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
